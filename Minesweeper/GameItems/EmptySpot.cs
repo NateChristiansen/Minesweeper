@@ -8,6 +8,8 @@
         }
         protected override void PostClick()
         {
+            Text = Mines.ToString();
+            Enabled = false;
         }
     }
 }

@@ -8,6 +8,7 @@
         }
         protected override void PostClick()
         {
+            Image = Properties.Resources.Mine;
         }
     }
 }

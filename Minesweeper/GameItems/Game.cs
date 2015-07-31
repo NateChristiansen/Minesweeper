@@ -6,7 +6,7 @@ namespace Minesweeper.GameItems
 {
     class Game
     {
-        public List<List<Spot>> BoardList { get; set; }
+        private List<List<Spot>> BoardList { get; set; }
         private readonly int _rowSize, _rowWidth;
         private Board _gameBoard;
 
@@ -49,10 +49,40 @@ namespace Minesweeper.GameItems
             return (int) ((_rowSize * _rowWidth) / 6.4);
         }
 
+        private void NumberMines()
+        {
+            BoardList.ForEach(row => row.ForEach(spot =>
+            {
+                var rowIndex = BoardList.IndexOf(row);
+                var columnIndex = row.IndexOf(spot);
+                var mines = new int();
+
+                for (var i = -1; i <= 1; i++)
+                {
+                    for (var j = -1; j <= 1; j++)
+                    {
+                        try
+                        {
+                            if (BoardList[rowIndex + i][columnIndex + j].ContainsMine)
+                            {
+                                mines++;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            var stuff = ex;
+                        }
+                    }
+                }
+                spot.Mines = spot.ContainsMine ? -1 : mines;
+            }));
+        }
+
         public void NewGame()
         {
             BoardList = new List<List<Spot>>();
             FillBoard();
+            NumberMines();
             _gameBoard = new Board { MineList = BoardList };
             _gameBoard.PopulateBoard();
             Application.Run(_gameBoard);
