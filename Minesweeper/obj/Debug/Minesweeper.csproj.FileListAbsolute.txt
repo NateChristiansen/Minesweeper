@@ -1,0 +1,11 @@
+F:\Workspace\Minesweeper\Minesweeper\bin\Debug\Minesweeper.exe.config
+F:\Workspace\Minesweeper\Minesweeper\bin\Debug\Minesweeper.exe
+F:\Workspace\Minesweeper\Minesweeper\bin\Debug\Minesweeper.pdb
+F:\Workspace\Minesweeper\Minesweeper\obj\Debug\Minesweeper.csprojResolveAssemblyReference.cache
+F:\Workspace\Minesweeper\Minesweeper\obj\Debug\Minesweeper.Board.resources
+F:\Workspace\Minesweeper\Minesweeper\obj\Debug\Minesweeper.GameSettings.resources
+F:\Workspace\Minesweeper\Minesweeper\obj\Debug\Minesweeper.Properties.Resources.resources
+F:\Workspace\Minesweeper\Minesweeper\obj\Debug\Minesweeper.csproj.GenerateResource.Cache
+F:\Workspace\Minesweeper\Minesweeper\obj\Debug\Minesweeper.exe
+F:\Workspace\Minesweeper\Minesweeper\obj\Debug\Minesweeper.pdb
+F:\Workspace\Minesweeper\Minesweeper\obj\Debug\Minesweeper.GameItems.Spot.resources
