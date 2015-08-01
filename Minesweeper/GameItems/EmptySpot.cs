@@ -8,7 +8,7 @@
         }
         protected override void PostClick()
         {
-            Text = Mines.ToString();
+            Text = AdjacentMines.ToString();
             Enabled = false;
         }
     }

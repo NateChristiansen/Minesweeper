@@ -8,9 +8,11 @@ namespace Minesweeper.GameItems
     {
         public bool ContainsMine { get; set; }
         public bool IsRightClicked { get; set; } = false;
-        public int Mines { get; set; }
+        public int AdjacentMines { get; set; }
+        public int XCoordinate { get; set; }
+        public int YCoordinate { get; set; }
 
-        protected override void OnMouseDown(MouseEventArgs mevent)
+        public void SpotClicked(MouseEventArgs mevent)
         {
             switch (mevent.Button)
             {
