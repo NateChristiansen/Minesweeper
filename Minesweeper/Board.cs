@@ -20,6 +20,11 @@ namespace Minesweeper
             InitializeComponent();
         }
 
+        private void Board_Load(object sender, System.EventArgs e)
+        {
+            PopulateBoard();
+        }
+
         public void PopulateBoard()
         {
             var x = Space;
@@ -40,8 +45,8 @@ namespace Minesweeper
             GameBoard.Width = x + _size.Width - 3;
             GameBoard.Height = y + Space + _size.Height * 2;
             GameStatus.Width = GameBoard.Width;
-            GameStatus.Controls.Add(_timeOfGame);
             GameStatus.Controls.Add(_minesLeftInGame);
+            GameStatus.Controls.Add(_timeOfGame);
             Height = GameBoard.Height + GameStatus.Height + 25;
             Width = GameBoard.Width + 20;
         }

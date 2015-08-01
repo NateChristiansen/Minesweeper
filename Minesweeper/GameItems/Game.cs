@@ -91,7 +91,6 @@ namespace Minesweeper.GameItems
             FillBoard();
             NumberMines();
             _gameBoard = new Board { MineList = BoardList };
-            _gameBoard.PopulateBoard();
             Application.Run(_gameBoard);
         }
 

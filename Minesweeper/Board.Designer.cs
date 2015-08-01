@@ -52,11 +52,14 @@ namespace Minesweeper
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(409, 353);
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(461, 228);
             this.Controls.Add(this.GameBoard);
             this.Controls.Add(this.GameStatus);
             this.Name = "Board";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Board_Load);
             this.ResumeLayout(false);
 
         }
