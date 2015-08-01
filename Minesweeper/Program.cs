@@ -15,7 +15,7 @@ namespace Minesweeper
             Application.SetCompatibleTextRenderingDefault(false);
             var settings = new GameSettings();
             Application.Run(settings);
-            new GameItems.Game(settings.Rows, settings.Columns);
+            new GameItems.Game(settings.Rows, settings.Columns, settings.Difficulty);
         }
     }
 }

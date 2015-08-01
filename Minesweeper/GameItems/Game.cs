@@ -9,11 +9,13 @@ namespace Minesweeper.GameItems
         private List<List<Spot>> BoardList { get; set; }
         private readonly int _rowSize, _rowWidth;
         private Board _gameBoard;
+        private readonly float _difficulty;
 
-        public Game(int rowSize = 10, int rowWidth = 10)
+        public Game(int rowSize = 10, int rowWidth = 10, float difficulty = 5)
         {
             _rowSize = rowSize;
             _rowWidth = rowWidth;
+            _difficulty = difficulty;
             NewGame();
         }
 
@@ -27,7 +29,7 @@ namespace Minesweeper.GameItems
                 for (var j = 0; j < _rowWidth; j++)
                 {
                     Spot spot;
-                    if (random.Next(0, 6) == 0 && mines > 0)
+                    if (random.Next(0, 10) == 0 && mines > 0)
                     {
                         mines--;
                         spot = new Mine { XCoordinate = j, YCoordinate = i };
@@ -45,15 +47,14 @@ namespace Minesweeper.GameItems
             {
                 var y = random.Next(0, _rowSize - 1);
                 var x = random.Next(0, _rowWidth - 1);
-                var spot = BoardList[y][x];
-                if (spot.GetType() != typeof(EmptySpot)) continue;
-                spot = new Mine { XCoordinate = x, YCoordinate = y };
+                if (BoardList[y][x].GetType() != typeof(EmptySpot)) continue;
+                BoardList[y][x] = new Mine { XCoordinate = x, YCoordinate = y };
                 mines--;
             }
         }
         private int CalculateMines()
         {
-            return (int)((_rowSize * _rowWidth) / 6.4);
+            return (int)((_rowSize * _rowWidth) / _difficulty);
         }
 
         private void NumberMines()
@@ -116,15 +117,6 @@ namespace Minesweeper.GameItems
                         // ignored
                     }
                 }
-            }
-        }
-
-        public void EmptySpotClicked(object spot, EventArgs e)
-        {
-            var loc = (Spot)spot;
-            if (loc.AdjacentMines == 0)
-            {
-
             }
         }
     }

@@ -36,6 +36,8 @@ namespace Minesweeper
             this.GoButton = new System.Windows.Forms.Button();
             this.RowBox = new System.Windows.Forms.NumericUpDown();
             this.ColumnBox = new System.Windows.Forms.NumericUpDown();
+            this.DifficultyBox = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.RowBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ColumnBox)).BeginInit();
             this.SuspendLayout();
@@ -60,9 +62,9 @@ namespace Minesweeper
             // 
             // GoButton
             // 
-            this.GoButton.Location = new System.Drawing.Point(15, 63);
+            this.GoButton.Location = new System.Drawing.Point(15, 92);
             this.GoButton.Name = "GoButton";
-            this.GoButton.Size = new System.Drawing.Size(109, 23);
+            this.GoButton.Size = new System.Drawing.Size(207, 23);
             this.GoButton.TabIndex = 4;
             this.GoButton.Text = "Go";
             this.GoButton.UseVisualStyleBackColor = true;
@@ -70,7 +72,7 @@ namespace Minesweeper
             // 
             // RowBox
             // 
-            this.RowBox.Location = new System.Drawing.Point(68, 13);
+            this.RowBox.Location = new System.Drawing.Point(166, 13);
             this.RowBox.Maximum = new decimal(new int[] {
             30,
             0,
@@ -92,7 +94,7 @@ namespace Minesweeper
             // 
             // ColumnBox
             // 
-            this.ColumnBox.Location = new System.Drawing.Point(68, 39);
+            this.ColumnBox.Location = new System.Drawing.Point(166, 39);
             this.ColumnBox.Maximum = new decimal(new int[] {
             30,
             0,
@@ -112,11 +114,35 @@ namespace Minesweeper
             0,
             0});
             // 
+            // DifficultyBox
+            // 
+            this.DifficultyBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DifficultyBox.FormattingEnabled = true;
+            this.DifficultyBox.Items.AddRange(new object[] {
+            "Easy",
+            "Normal",
+            "Hard"});
+            this.DifficultyBox.Location = new System.Drawing.Point(166, 65);
+            this.DifficultyBox.Name = "DifficultyBox";
+            this.DifficultyBox.Size = new System.Drawing.Size(56, 21);
+            this.DifficultyBox.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 68);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(50, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Difficulty:";
+            // 
             // GameSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(136, 98);
+            this.ClientSize = new System.Drawing.Size(234, 127);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.DifficultyBox);
             this.Controls.Add(this.ColumnBox);
             this.Controls.Add(this.RowBox);
             this.Controls.Add(this.GoButton);
@@ -139,5 +165,7 @@ namespace Minesweeper
         private Button GoButton;
         private NumericUpDown RowBox;
         private NumericUpDown ColumnBox;
+        private ComboBox DifficultyBox;
+        private Label label3;
     }
 }
