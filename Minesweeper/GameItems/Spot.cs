@@ -15,7 +15,8 @@ namespace Minesweeper.GameItems
             switch (mevent.Button)
             {
                 case MouseButtons.Left:
-                    PostClick();
+                    if (!IsRightClicked)
+                        PostClick();
                     break;
                 case MouseButtons.Right:
                     RightClick();
