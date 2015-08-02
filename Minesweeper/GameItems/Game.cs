@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Minesweeper.GameItems
@@ -15,6 +16,14 @@ namespace Minesweeper.GameItems
         private readonly Timer _timer = new Timer { Interval = 1000, Enabled = false };
         private int _minesLeft;
         private int Time { get; set; }
+
+        private readonly Dictionary<string, Image> _faceImages = new Dictionary<string, Image>()
+        {
+            {"Smile", Properties.Resources.Smile},
+            {"Win", Properties.Resources.Win},
+            {"Lose", Properties.Resources.Lose},
+            {"Click", Properties.Resources.Click}
+        };
 
         private int MinesLeft
         {
@@ -111,21 +120,26 @@ namespace Minesweeper.GameItems
             GameBoard = new Board { MineList = BoardList };
             _timer.Tick += (sender, args) =>
             {
+                if (!GameBoard.FaceImage.Image.Equals(_faceImages["Smile"]))
+                    GameBoard.FaceImage.Image = _faceImages["Smile"];
                 Time++;
                 GameBoard.TimeOfGame.Text = Time.ToString();
             };
             _timer.Start();
             GameBoard.UpdateMines(Mines);
+            GameBoard.FaceImage.Image = _faceImages["Smile"];
+            //todo:GameBoard.FaceImage.MouseDown += (sender, args) => NewGame();
             Application.Run(GameBoard);
         }
 
         public void SpotClicked(object spot, EventArgs e)
         {
+            GameBoard.FaceImage.Image = _faceImages["Click"];
             var loc = (Spot)spot;
             var mevent = (MouseEventArgs)e;
             if (mevent.Button.Equals(MouseButtons.Right))
             {
-                if (loc.GetType() == typeof (Mine))
+                if (loc.GetType() == typeof(Mine))
                     MinesLeft--;
                 Mines = loc.IsRightClicked ? Mines + 1 : Mines - 1;
                 GameBoard.UpdateMines(Mines);
@@ -163,11 +177,18 @@ namespace Minesweeper.GameItems
         {
             _timer.Stop();
             if (didWin)
+            {
                 BoardList.ForEach(row => row.ForEach(spot =>
                 {
                     if (!spot.IsRightClicked)
                         spot.SpotClicked(new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
                 }));
+                GameBoard.FaceImage.Image = _faceImages["Win"];
+            }
+            else
+            {
+                GameBoard.FaceImage.Image = _faceImages["Lose"];
+            }
             GameBoard.GameBoard.Enabled = false;
         }
     }
