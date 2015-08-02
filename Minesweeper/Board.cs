@@ -11,12 +11,9 @@ namespace Minesweeper
         private readonly Size _size = new Size(20,20);
         private const int Space = 0;
         public List<List<Spot>> MineList { get; set; }
-        private readonly Label _timeOfGame, _minesLeftInGame;
 
         public Board()
         {
-            _timeOfGame = new Label {Anchor = AnchorStyles.Top | AnchorStyles.Left, Text = "Time"};
-            _minesLeftInGame = new Label {Anchor = AnchorStyles.Top | AnchorStyles.Right, Text = "Mines"};
             InitializeComponent();
         }
 
@@ -45,10 +42,13 @@ namespace Minesweeper
             GameBoard.Width = x + _size.Width - 3;
             GameBoard.Height = y + Space + _size.Height * 2;
             GameStatus.Width = GameBoard.Width;
-            GameStatus.Controls.Add(_minesLeftInGame);
-            GameStatus.Controls.Add(_timeOfGame);
             Height = GameBoard.Height + GameStatus.Height + 25;
             Width = GameBoard.Width + 20;
+        }
+
+        public void UpdateMines(int mines)
+        {
+            NumberOfMines.Text = mines.ToString();
         }
     }
 }

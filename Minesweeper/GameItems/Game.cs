@@ -7,15 +7,31 @@ namespace Minesweeper.GameItems
     class Game
     {
         private List<List<Spot>> BoardList { get; set; }
-        private readonly int _rowSize, _rowWidth;
-        private Board _gameBoard;
-        private readonly float _difficulty;
+        private int Mines { get; set; }
+        private int RowSize { get; }
+        private int RowWidth { get; }
+        private Board GameBoard { get; set; }
+        private float Difficulty { get; }
+        private readonly Timer _timer = new Timer { Interval = 1000, Enabled = false };
+        private int _minesLeft;
+        private int Time { get; set; }
+
+        private int MinesLeft
+        {
+            get { return _minesLeft; }
+            set
+            {
+                _minesLeft = value;
+                if (_minesLeft.Equals(0))
+                    GameOver(true);
+            }
+        }
 
         public Game(int rowSize = 10, int rowWidth = 10, float difficulty = 5)
         {
-            _rowSize = rowSize;
-            _rowWidth = rowWidth;
-            _difficulty = difficulty;
+            RowSize = rowSize;
+            RowWidth = rowWidth;
+            Difficulty = difficulty;
             NewGame();
         }
 
@@ -23,13 +39,13 @@ namespace Minesweeper.GameItems
         {
             var mines = CalculateMines();
             var random = new Random();
-            for (var i = 0; i < _rowSize; i++)
+            for (var i = 0; i < RowSize; i++)
             {
                 var row = new List<Spot>();
-                for (var j = 0; j < _rowWidth; j++)
+                for (var j = 0; j < RowWidth; j++)
                 {
                     Spot spot;
-                    if (random.Next(0, 10) == 0 && mines > 0)
+                    if (random.Next(0, 10).Equals(0) && mines > 0)
                     {
                         mines--;
                         spot = new Mine { XCoordinate = j, YCoordinate = i };
@@ -45,8 +61,8 @@ namespace Minesweeper.GameItems
             }
             while (mines > 0)
             {
-                var y = random.Next(0, _rowSize - 1);
-                var x = random.Next(0, _rowWidth - 1);
+                var y = random.Next(0, RowSize - 1);
+                var x = random.Next(0, RowWidth - 1);
                 if (BoardList[y][x].GetType() != typeof(EmptySpot)) continue;
                 BoardList[y][x] = new Mine { XCoordinate = x, YCoordinate = y };
                 mines--;
@@ -54,7 +70,9 @@ namespace Minesweeper.GameItems
         }
         private int CalculateMines()
         {
-            return (int)((_rowSize * _rowWidth) / _difficulty);
+            Mines = (int)((RowSize * RowWidth) / Difficulty);
+            MinesLeft = Mines;
+            return Mines;
         }
 
         private void NumberMines()
@@ -90,16 +108,38 @@ namespace Minesweeper.GameItems
             BoardList = new List<List<Spot>>();
             FillBoard();
             NumberMines();
-            _gameBoard = new Board { MineList = BoardList };
-            Application.Run(_gameBoard);
+            GameBoard = new Board { MineList = BoardList };
+            _timer.Tick += (sender, args) =>
+            {
+                Time++;
+                GameBoard.TimeOfGame.Text = Time.ToString();
+            };
+            _timer.Start();
+            GameBoard.UpdateMines(Mines);
+            Application.Run(GameBoard);
         }
 
         public void SpotClicked(object spot, EventArgs e)
         {
             var loc = (Spot)spot;
             var mevent = (MouseEventArgs)e;
+            if (mevent.Button.Equals(MouseButtons.Right))
+            {
+                if (loc.GetType() == typeof (Mine))
+                    MinesLeft--;
+                Mines = loc.IsRightClicked ? Mines + 1 : Mines - 1;
+                GameBoard.UpdateMines(Mines);
+            }
+
             loc.SpotClicked(mevent);
-            if (loc.AdjacentMines != 0 || mevent.Button != MouseButtons.Left) return;
+            if (loc.GetType() == typeof(Mine) && mevent.Button.Equals(MouseButtons.Left) && !loc.IsRightClicked)
+            {
+                GameOver(false);
+                return;
+            }
+
+            if (!loc.AdjacentMines.Equals(0) || !mevent.Button.Equals(MouseButtons.Left)) return;
+
             for (var i = -1; i <= 1; i++)
             {
                 for (var j = -1; j <= 1; j++)
@@ -117,6 +157,18 @@ namespace Minesweeper.GameItems
                     }
                 }
             }
+        }
+
+        public void GameOver(bool didWin)
+        {
+            _timer.Stop();
+            if (didWin)
+                BoardList.ForEach(row => row.ForEach(spot =>
+                {
+                    if (!spot.IsRightClicked)
+                        spot.SpotClicked(new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
+                }));
+            GameBoard.GameBoard.Enabled = false;
         }
     }
 }
