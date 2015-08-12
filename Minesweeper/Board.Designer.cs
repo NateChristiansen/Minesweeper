@@ -31,10 +31,10 @@ namespace Minesweeper
         private void InitializeComponent()
         {
             this.GameStatus = new System.Windows.Forms.Panel();
+            this.FaceImage = new System.Windows.Forms.PictureBox();
             this.TimeOfGame = new System.Windows.Forms.Label();
             this.NumberOfMines = new System.Windows.Forms.Label();
             this.GameBoard = new System.Windows.Forms.Panel();
-            this.FaceImage = new System.Windows.Forms.PictureBox();
             this.GameStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FaceImage)).BeginInit();
             this.SuspendLayout();
@@ -48,6 +48,14 @@ namespace Minesweeper
             this.GameStatus.Name = "GameStatus";
             this.GameStatus.Size = new System.Drawing.Size(194, 67);
             this.GameStatus.TabIndex = 0;
+            // 
+            // FaceImage
+            // 
+            this.FaceImage.Location = new System.Drawing.Point(70, 3);
+            this.FaceImage.Name = "FaceImage";
+            this.FaceImage.Size = new System.Drawing.Size(60, 60);
+            this.FaceImage.TabIndex = 2;
+            this.FaceImage.TabStop = false;
             // 
             // TimeOfGame
             // 
@@ -76,14 +84,6 @@ namespace Minesweeper
             this.GameBoard.Size = new System.Drawing.Size(195, 176);
             this.GameBoard.TabIndex = 1;
             // 
-            // FaceImage
-            // 
-            this.FaceImage.Location = new System.Drawing.Point(70, 3);
-            this.FaceImage.Name = "FaceImage";
-            this.FaceImage.Size = new System.Drawing.Size(60, 60);
-            this.FaceImage.TabIndex = 2;
-            this.FaceImage.TabStop = false;
-            // 
             // Board
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -94,7 +94,6 @@ namespace Minesweeper
             this.Controls.Add(this.GameStatus);
             this.Name = "Board";
             this.Text = "Minesweeper";
-            this.Load += new System.EventHandler(this.Board_Load);
             this.GameStatus.ResumeLayout(false);
             this.GameStatus.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FaceImage)).EndInit();

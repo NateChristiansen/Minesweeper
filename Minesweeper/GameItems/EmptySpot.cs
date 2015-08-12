@@ -1,6 +1,6 @@
 ﻿namespace Minesweeper.GameItems
 {
-    class EmptySpot: Spot
+    class EmptySpot : Spot
     {
         public EmptySpot()
         {

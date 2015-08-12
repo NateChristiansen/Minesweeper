@@ -2,27 +2,38 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Minesweeper.Properties;
 
 namespace Minesweeper.GameItems
 {
     class Game
     {
         private List<List<Spot>> BoardList { get; set; }
+
         private int Mines { get; set; }
+
         private int RowSize { get; }
+
         private int RowWidth { get; }
+
         private Board GameBoard { get; set; }
+
         private float Difficulty { get; }
+
         private readonly Timer _timer = new Timer { Interval = 1000, Enabled = false };
+
         private int _minesLeft;
+
         private int Time { get; set; }
+
+        private readonly Random _random = new Random();
 
         private readonly Dictionary<string, Image> _faceImages = new Dictionary<string, Image>()
         {
-            {"Smile", Properties.Resources.Smile},
-            {"Win", Properties.Resources.Win},
-            {"Lose", Properties.Resources.Lose},
-            {"Click", Properties.Resources.Click}
+            {"Smile", Resources.Smile},
+            {"Win", Resources.Win},
+            {"Lose", Resources.Lose},
+            {"Click", Resources.Click}
         };
 
         private int MinesLeft
@@ -41,28 +52,37 @@ namespace Minesweeper.GameItems
             RowSize = rowSize;
             RowWidth = rowWidth;
             Difficulty = difficulty;
+            _timer.Tick += (sender, args) =>
+            {
+                if (!GameBoard.FaceImage.Image.Equals(_faceImages["Smile"]))
+                    GameBoard.FaceImage.Image = _faceImages["Smile"];
+                Time++;
+                GameBoard.TimeOfGame.Text = Time.ToString();
+            };
+            GameBoard = new Board();
             NewGame();
+            Application.Run(GameBoard);
         }
 
         public void FillBoard()
         {
+            BoardList = new List<List<Spot>>();
             var mines = CalculateMines();
-            var random = new Random();
             for (var i = 0; i < RowSize; i++)
             {
                 var row = new List<Spot>();
                 for (var j = 0; j < RowWidth; j++)
                 {
                     Spot spot;
-                    if (random.Next(0, 10).Equals(0) && mines > 0)
+                    if (Math.Round(_random.NextDouble() * 10).Equals(0) && mines > 0)
                     {
                         mines--;
-                        spot = new Mine { XCoordinate = j, YCoordinate = i };
+                        spot = new Mine { XCoordinate = j, YCoordinate = i, Enabled = true };
                         row.Add(spot);
                     }
                     else
                     {
-                        spot = new EmptySpot { XCoordinate = j, YCoordinate = i };
+                        spot = new EmptySpot { XCoordinate = j, YCoordinate = i, Enabled = true };
                         row.Add(spot);
                     }
                 }
@@ -70,8 +90,8 @@ namespace Minesweeper.GameItems
             }
             while (mines > 0)
             {
-                var y = random.Next(0, RowSize - 1);
-                var x = random.Next(0, RowWidth - 1);
+                var y = _random.Next(0, RowSize - 1);
+                var x = _random.Next(0, RowWidth - 1);
                 if (BoardList[y][x].GetType() != typeof(EmptySpot)) continue;
                 BoardList[y][x] = new Mine { XCoordinate = x, YCoordinate = y };
                 mines--;
@@ -101,9 +121,9 @@ namespace Minesweeper.GameItems
                                 mines++;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
-                            var stuff = ex;
+                            //ignore
                         }
                     }
                 }
@@ -114,22 +134,19 @@ namespace Minesweeper.GameItems
 
         public void NewGame()
         {
-            BoardList = new List<List<Spot>>();
             FillBoard();
             NumberMines();
-            GameBoard = new Board { MineList = BoardList };
-            _timer.Tick += (sender, args) =>
-            {
-                if (!GameBoard.FaceImage.Image.Equals(_faceImages["Smile"]))
-                    GameBoard.FaceImage.Image = _faceImages["Smile"];
-                Time++;
-                GameBoard.TimeOfGame.Text = Time.ToString();
-            };
-            _timer.Start();
+            GameBoard.MineList = BoardList;
+            GameBoard.PopulateBoard();
             GameBoard.UpdateMines(Mines);
             GameBoard.FaceImage.Image = _faceImages["Smile"];
-            //todo:GameBoard.FaceImage.MouseDown += (sender, args) => NewGame();
-            Application.Run(GameBoard);
+            GameBoard.FaceImage.MouseDown += (sender, args) =>
+            {
+                Time = 0;
+                NewGame();
+            };
+            GameBoard.GameBoard.Enabled = true;
+            _timer.Start();
         }
 
         public void SpotClicked(object spot, EventArgs e)

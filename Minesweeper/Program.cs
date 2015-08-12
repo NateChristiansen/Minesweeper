@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Minesweeper.GameItems;
 
 namespace Minesweeper
 {
@@ -15,7 +16,7 @@ namespace Minesweeper
             Application.SetCompatibleTextRenderingDefault(false);
             var settings = new GameSettings();
             Application.Run(settings);
-            new GameItems.Game(settings.Rows, settings.Columns, settings.Difficulty);
+            new Game(settings.Rows, settings.Columns, settings.Difficulty);
         }
     }
 }

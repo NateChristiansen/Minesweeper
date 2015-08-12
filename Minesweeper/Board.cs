@@ -8,7 +8,7 @@ namespace Minesweeper
 {
     public partial class Board : Form
     {
-        private readonly Size _size = new Size(20,20);
+        private readonly Size _size = new Size(20, 20);
         private const int Space = 0;
         public List<List<Spot>> MineList { get; set; }
 
@@ -24,6 +24,7 @@ namespace Minesweeper
 
         public void PopulateBoard()
         {
+            GameBoard.Controls.Clear();
             var x = Space;
             var y = Space;
             MineList.ForEach(row =>
@@ -31,6 +32,7 @@ namespace Minesweeper
                 x = Space;
                 row.ForEach(spot =>
                 {
+                    spot.Enabled = true;
                     spot.Size = _size;
                     spot.Location = new Point(x, y);
                     x += _size.Width + Space;
